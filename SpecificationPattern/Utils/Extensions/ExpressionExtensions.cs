@@ -2,22 +2,23 @@
 
 namespace SpecificationPattern.Utils.Extensions;
 
+//https://petemontgomery.wordpress.com/2011/02/10/a-universal-predicatebuilder/
 public static class ExpressionExtensions
 {
     /// <summary>
     /// Creates a predicate that evaluates to true.
     /// </summary>
-    public static Expression<Func<T, bool>> True<T>() { return param => true; }
+    public static Expression<Func<T, bool>> True<T>() => param => true;
 
     /// <summary>
     /// Creates a predicate that evaluates to false.
     /// </summary>
-    public static Expression<Func<T, bool>> False<T>() { return param => false; }
+    public static Expression<Func<T, bool>> False<T>() => param => false;
 
     /// <summary>
     /// Creates a predicate expression from the specified lambda expression.
     /// </summary>
-    public static Expression<Func<T, bool>> Create<T>(Expression<Func<T, bool>> predicate) { return predicate; }
+    public static Expression<Func<T, bool>> Create<T>(Expression<Func<T, bool>> predicate) => predicate;
 
     /// <summary>
     /// Combines the first predicate with the second using the logical "and".
@@ -56,12 +57,10 @@ public static class ExpressionExtensions
         {
             this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
         }
- 
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression>? map, Expression exp)
-        {
-            return new ParameterRebinder(map).Visit(exp);
-        }
- 
+
+        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression>? map, Expression exp) =>
+            new ParameterRebinder(map).Visit(exp);
+
         protected override Expression VisitParameter(ParameterExpression p)
         {
             if (map.TryGetValue(p, out var replacement))
